@@ -1,20 +1,31 @@
-# [App Name]
+# BearingData
 
-[One or two sentences describing what this app does and why it exists.]
+A Garmin Connect IQ data field for the Venu 3 that displays your current compass heading in degrees, with a direction label (N, NE, E, etc.) shown below.
 
 ---
 
 ## About This Project
 
-This app was built through **vibecoding** — a development approach where the human provides direction, intent, and testing, and an AI (in this case, Claude by Anthropic) writes all of the code. I have no formal programming background; this is an experiment in what's possible when curiosity and AI assistance meet.
+This app was built through **vibecoding** — a development approach where the human provides direction, intent, and testing, and an AI writes all of the code. I have no formal programming background; this is an experiment in what's possible when curiosity and AI assistance meet.
 
-Every line of Monkey C in this project was written by Claude. My role was to describe what I wanted, test each iteration on a real Garmin Venu 3, report back what worked and what didn't, and keep pushing until the result was something I was happy with.
+The core app was written by **Claude (Anthropic)**. The direction label feature was added by **ticlazau/Qwen2.5-Coder-7B-Instruct** — a fine-tune of Alibaba Cloud's Qwen2.5-Coder-7B-Instruct, run locally via Ollama/Cline — as part of an experiment in generating training data for fine-tuning smaller local models for Garmin Connect IQ development. My role throughout was to describe what I wanted, test each iteration on a real Garmin Venu 3, report back what worked and what didn't, and keep pushing until the result was something I was happy with.
 
 As part of this process, I've been building a knowledge base — a growing collection of Markdown documents that capture the real-world lessons Claude and I have uncovered together: non-obvious API behaviours, compiler quirks, layout constraints specific to the Venu 3's circular display, and fixes for bugs that aren't covered anywhere in the official SDK documentation. These files are fed back into Claude at the start of each new session so the knowledge carries forward rather than being rediscovered from scratch every time.
 
 The knowledge base is open source. If you're building Connect IQ apps for the Venu 3 and want to skip some of the trial and error, you're welcome to use it:
 
 **[Venu 3 Claude Coding Knowledge Base](https://github.com/MJenkinsonGIT/Venu3ClaudeCodingKnowledge)**
+
+---
+
+## What It Shows
+
+The field displays two pieces of information:
+
+- **Heading in degrees** — your true-north referenced compass heading, updated continuously during an activity
+- **Cardinal direction** — the corresponding direction label (North, North-East, East, South-East, South, South-West, West, North-West)
+
+The heading is sourced from `Activity.Info.currentHeading`, which reads the device's compass during an activity. If the compass is unavailable, the field shows `--`.
 
 ---
 
@@ -26,9 +37,9 @@ Each release includes three files. All three contain the same app — the differ
 
 | File | Size | Best for |
 |------|------|----------|
-| `[AppName]-release.prg` | Smallest | Most users — just install and run |
-| `[AppName]-debug.prg` | ~4× larger | Troubleshooting crashes — includes debug symbols |
-| `[AppName].iq` | Small (7-zip archive) | Developers / advanced users |
+| `BearingData-release.prg` | Smallest | Most users — just install and run |
+| `BearingData-debug.prg` | ~4× larger | Troubleshooting crashes — includes debug symbols |
+| `BearingData.iq` | Small (7-zip archive) | Developers / advanced users |
 
 **Release `.prg`** is a fully optimised build with debug symbols and logging stripped out. This is what you want if you just want to use the app.
 
@@ -71,4 +82,6 @@ Compatibility with other devices has not been tested.
 
 ## Notes
 
-[Any app-specific notes, known limitations, or usage tips go here.]
+- The compass heading requires an active activity — the field will show `--` outside of an activity or if the compass is unavailable.
+- Heading is true-north referenced, not magnetic north.
+- The direction label uses 8 cardinal/intercardinal points (N, NE, E, SE, S, SW, W, NW) with boundaries at every 45°.

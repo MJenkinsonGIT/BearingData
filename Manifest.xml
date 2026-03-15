@@ -1,0 +1,25 @@
+<?xml version="1.0"?>
+<iq:manifest version="3" xmlns:iq="http://www.garmin.com/xml/connectiq">
+    <iq:application
+        entry="BearingDataApp"
+        id="3f8a2b1c4d5e6f7a8b9c0d1e2f3a4b5c"
+        launcherIcon="@Drawables.LauncherIcon"
+        minApiLevel="5.2.0"
+        name="@Strings.AppName"
+        type="datafield"
+        version="1.0.0">
+
+        <iq:products>
+            <iq:product id="venu3"/>
+        </iq:products>
+
+        <iq:permissions>
+            <!-- No permissions needed: currentHeading is available via Activity.Info without Positioning -->
+        </iq:permissions>
+
+        <iq:languages>
+            <iq:language>eng</iq:language>
+        </iq:languages>
+
+    </iq:application>
+</iq:manifest>
